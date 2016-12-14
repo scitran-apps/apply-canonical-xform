@@ -1,0 +1,38 @@
+#! /bin/bash
+#
+# Run apply-canonical-xform Gear
+# Built to flywheel-v0 spec.
+#
+CONTAINER="[scitran/apply-canonical-xform]"
+echo -e "$CONTAINER  Initiated"
+
+# Configure the ENV
+export LD_LIBRARY_PATH=/opt/mcr/v90/runtime/glnxa64:/opt/mcr/v90/bin/glnxa64:/opt/mcr/v90/sys/os/glnxa64:$LD_LIBRARY_PATH
+export XAPPLRESDIR=/opt/mcr/v90/X11/app-defaults
+
+# Configure paths
+FLYWHEEL_BASE=/flywheel/v0
+OUTPUT_DIR=$FLYWHEEL_BASE/output
+INPUT_DIR=$FLYWHEEL_BASE/input
+NIFTI_DIR=$INPUT_DIR/nifti
+INPUT_FILE=`find $NIFTI_DIR/* -type f -name *.nii* | head -1`
+
+# Execute the algorithm
+${FLYWHEEL_BASE}/gear_niftiApplyCanonicalXform $INPUT_FILE $OUTPUT_DIR
+
+# Get a list of the files in the output directory
+outputs=$(find $OUTPUT_DIR/* -maxdepth 0 -type f)
+
+# If outputs exist, generate metadata, and exit
+if [[ -z $outputs ]]
+    then
+        echo "$CONTAINER  No results found in output directory... Exiting"
+        exit 1
+    else
+        cd $OUTPUT_DIR
+        $FLYWHEEL_BASE/metadata_create.py $OUTPUT_DIR $CONTAINER
+        echo -e "$CONTAINER  Wrote: `ls`"
+        echo -e "$CONTAINER  Done!"
+fi
+
+exit 0
