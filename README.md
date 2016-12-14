@@ -1,4 +1,6 @@
-# apply-canonical-xform
+[![Docker Pulls](https://img.shields.io/docker/pulls/scitran/apply-canonical-xform.svg)](https://hub.docker.com/r/scitran/apply-canonical-xform/)
+[![Docker Stars](https://img.shields.io/docker/stars/scitran/apply-canonical-xform.svg)](https://hub.docker.com/r/scitran/apply-canonical-xform/)
+# scitran/apply-canonical-xform
 Reorient NIfTI data and metadata fields into RAS space by estimating and applying a canonical transform.
 
 This Gear uses a compiled version of the [VISTASOFT](https://github.com/vistalab/vistasoft/) function [niftiApplyCannonicalXform](https://github.com/vistalab/vistasoft/blob/master/fileFilters/nifti/niftiApplyCannonicalXform.m).
